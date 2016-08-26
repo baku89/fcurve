@@ -34,18 +34,17 @@
   ], 
   "keyframes": [
     {
-      "value_right": 0.0, 
-      "value_left": 0.0, 
-      "time_right": 0.5, 
-      "time_left": -0.5, 
+      "easing": [
+        0.6666665, 
+        0.0, 
+        0.33333349999999995, 
+        1.0
+      ], 
+      "interpolation": "spline", 
       "value": 0.0, 
       "time": 0.0
     }, 
     {
-      "value_right": 0.0, 
-      "value_left": 0.0, 
-      "time_right": 0.25, 
-      "time_left": -0.5, 
       "value": 100.0, 
       "time": 1.0
     }

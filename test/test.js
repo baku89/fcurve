@@ -13,6 +13,7 @@ function evalTestData(path) {
 	const fps = testData.fps
 
 	let easing = FCurve(keyframes)
+	let succeeded = true
 
 	for (let i = 0; i < frameAnimation.length; i++) {
 
@@ -20,27 +21,26 @@ function evalTestData(path) {
 		let target = frameAnimation[i]
 		let value = easing(t)
 		let diff = value - target
+		let err = Math.abs(diff) > 1.e-3
+
+		succeeded = succeeded && !err
 
 		console.log(
 			`[${i}\t] ` +
 			`target=${fixedFloat(target, 4)}\t` +
 			`value=${fixedFloat(value, 4)}\t` +
 			`diff=${fixedFloat(diff, 8)}\t` +
-			((Math.abs(diff) > 1.e-3) ? '[ERR]' : '')
+			(err ? '[ERR]' : '')
 		)
 	}
-
-	return true
+	return succeeded
 }
 
 
 describe('diff test', function() {
 
 	let pathList = [
-		'./test-data0.json',
-		'./test-data1.json',
-		'./test-data2.json',
-		'./test-data3.json'
+		'./data/test-data0.json'
 	]
 
 	pathList.forEach((path) => {
