@@ -1,7 +1,10 @@
 import BezierEasing from 'bezier-easing'
 import lerp from 'lerp'
+import deepcopy from 'deepcopy'
 
-function FCurve(keyframes) {
+function FCurve(_keyframes) {
+
+	let keyframes = deepcopy(_keyframes)
 
 	keyframes.forEach((key) => {
 
@@ -16,7 +19,7 @@ function FCurve(keyframes) {
 				key.func = function() {return 0}
 				break
 		}
-		
+
 	})
 
 	return function(time) {
