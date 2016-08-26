@@ -1,34 +1,52 @@
 /*global describe, it*/
-// import FCurve from '../src/index.js'
-
 import assert from 'assert'
 import FCurve from '../src'
-import testData from './test-data.json'
 
+function fixedFloat(value, num) {
+	return (value == 0 ? ' ' : value >= 0 ? '+' : '') + value.toFixed(num)
+}
 
-const frameAnimation = testData.frame_animation
-const keyframes = testData.keyframes
-const fps = testData.fps
+function evalTestData(path) {
+	const testData = require(path)
+	const frameAnimation = testData.frame_animation
+	const keyframes = testData.keyframes
+	const fps = testData.fps
 
-let easing = FCurve(keyframes)
+	let easing = FCurve(keyframes)
 
-for (let i = 0; i < frameAnimation.length; i++) {
-	let t = i / fps
-	console.log(`target=${frameAnimation[i].toFixed(4)}\tvalue=${easing(t).toFixed(4)}`)
+	for (let i = 0; i < frameAnimation.length; i++) {
+
+		let t = i / fps
+		let target = frameAnimation[i]
+		let value = easing(t)
+		let diff = value - target
+
+		console.log(
+			`[${i}\t] ` +
+			`target=${fixedFloat(target, 4)}\t` +
+			`value=${fixedFloat(value, 4)}\t` +
+			`diff=${fixedFloat(diff, 8)}\t` +
+			((Math.abs(diff) > 1.e-3) ? '[ERR]' : '')
+		)
+	}
+
+	return true
 }
 
 
+describe('diff test', function() {
 
-/*
+	let pathList = [
+		'./test-data0.json',
+		'./test-data1.json',
+		'./test-data2.json',
+		'./test-data3.json'
+	]
 
-let calc = {
-	add: (a, b) => a + b
-}
-
-describe('calc', function() {
-	it('add', function() {
-		assert.equal(4, calc.add(1, 3))
+	pathList.forEach((path) => {
+		it(path, function() {
+			assert.equal(true, evalTestData(path))
+		})
 	})
-})
 
-*/
+})
